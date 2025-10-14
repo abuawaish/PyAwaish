@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CRUD Operations Interface</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="static/mysql.png"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6366f1;
+            --secondary: #4f46e5;
+            --accent: #818cf8;
+            --background: #ffffff;
+            --text: #1e293b;
+            --border: #e2e8f0;
+            --card-bg: #ffffff;
+            --shadow: 0 1px 3px rgba(0,0,0,0.1);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --sidebar-width: 280px;
+            --error: #dc3545;
+            --warning: #ffc107;
+            --success: #28a745;
+        }
+
+        [data-theme="dark"] {
+            --primary: #818cf8;
+            --secondary: #6366f1;
+            --accent: #a5b4fc;
+            --background: #0f172a;
+            --text: #f8fafc;
+            --border: #334155;
+            --card-bg: #1e293b;
+            --shadow: 0 1px 3px rgba(0,0,0,0.3);
+            --error: #ff6b6b;
+            --warning: #ffd93d;
+            --success: #6cff7a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--background);
+            color: var(--text);
+            transition: var(--transition);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--card-bg);
+            padding: 1.5rem;
+            border-right: 1px solid var(--border);
+            position: fixed;
+            height: 100vh;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.75rem 1rem;
+            margin: 0.5rem 0;
+            border-radius: 0.5rem;
+            color: var(--text);
+            text-decoration: none;
+            transition: var(--transition);
+            cursor: pointer;
+        }
+
+        .nav-item:hover {
+            background: rgba(99, 102, 241, 0.1);
+        }
+
+        .nav-item.active {
+            background: var(--primary);
+            color: white;
+        }
+
+        .nav-item i {
+            width: 24px;
+            text-align: center;
+        }
+
+        .main-content {
+            flex: 1;
+            margin-left: var(--sidebar-width);
+            padding: 2rem;
+        }
+
+        .theme-toggle {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: var(--card-bg);
+            border: 2px solid var(--border);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow);
+        }
+
+        .theme-toggle:hover {
+            transform: rotate(180deg) scale(1.1);
+        }
+
+        .operation-section {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--shadow);
+            animation: slideUp 0.4s ease;
+        }
+
+        .response-container {
+            background: var(--card-bg);
+            border-radius: 1rem;
+            padding: 1rem;
+            margin-top: 2rem;
+            border: 2px solid var(--border);
+            max-height: 400px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            white-space: pre-wrap;
+            animation: fadeIn 0.4s ease;
+        }
+
+        .response-container.error {
+            color: var(--error);
+            border-color: var(--error);
+            background: rgba(220, 53, 69, 0.1);
+        }
+
+        .response-container.warning {
+            color: var(--warning);
+            border-color: var(--warning);
+            background: rgba(255, 193, 7, 0.1);
+        }
+
+        .response-container.success {
+            color: var(--success);
+            border-color: var(--success);
+            background: rgba(40, 167, 69, 0.1);
+        }
+
+        .sql-error, .sql-warning {
+            color: var(--text);
+            white-space: pre-wrap;
+            line-height: 1.4;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .error-code, .warning-code {
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .error-code { color: var(--error); }
+        .warning-code { color: var(--warning); }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--text);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: 0.5rem;
+            background: var(--card-bg);
+            color: var(--text);
+            transition: var(--transition);
+            margin-bottom: 1rem;
+        }
+
+        button[type="submit"] {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 0.875rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .about-section {
+            margin-top: auto;
+            padding: 1.5rem 0 0;
+            border-top: 1px solid var(--border);
+        }
+
+        .about-content {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .about-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .author-info {
+            margin: 0.5rem 0;
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+
+        .author-link {
+            color: var(--text);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            padding: 0.25rem 0;
+        }
+
+        .author-link:hover {
+            color: var(--primary);
+            transform: translateX(5px);
+        }
+
+        .about-icon {
+            font-size: 1.25rem;
+            width: 24px;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                position: static;
+                height: auto;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1rem;
+            }
+
+            .theme-toggle {
+                bottom: 1rem;
+                right: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="sidebar">
+        <h2 style="margin-bottom: 2rem; color: var(--primary);">Operations</h2>
+        <div class="nav-item active" data-operation="fetch_data">
+            <i class="fas fa-download"></i>
+            Fetch Data
+        </div>
+        <div class="nav-item" data-operation="insert">
+            <i class="fas fa-plus-circle"></i>
+            Insert Data
+        </div>
+        <div class="nav-item" data-operation="update">
+            <i class="fas fa-sync-alt"></i>
+            Update Data
+        </div>
+        <div class="nav-item" data-operation="delete">
+            <i class="fas fa-trash-alt"></i>
+            Delete Data
+        </div>
+        <div class="nav-item" data-operation="show_tables">
+            <i class="fas fa-table"></i>
+            Show Tables
+        </div>
+        <div class="nav-item" data-operation="custom_query">
+            <i class="fas fa-terminal"></i>
+            Custom Query
+        </div>
+
+        <div class="about-section">
+            <div class="about-title">
+                <i class="fas fa-info-circle about-icon"></i>
+                About Section
+            </div>
+            <div class="about-content">
+                <p>A professional database interface featuring an enhanced feedback system, developed by :</p>
+                <div class="author-info">
+                    <a href="https://www.linkedin.com/in/abu-awaish-a6523b258/" class="author-link">
+                        <i class="fas fa-user-alt"></i>
+                        Abu Awaish
+                    </a>
+                    <a href="mailto:abuawaish7@gmail.com" class="author-link">
+                        <i class="fas fa-envelope"></i>
+                        abuawaish7@gmail.com
+                    </a>
+                    <a href="https://github.com/abuawaish" target="_blank" class="author-link">
+                        <i class="fab fa-github"></i>
+                        github.com/abuawaish
+                    </a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <header>
+            <h1>Database Operations Interface</h1>
+        </header>
+
+        <form id="crudForm">
+            <div id="fetchSection" class="operation-section">
+                <label for="fetchTable">Table Name:</label>
+                <input type="text" id="fetchTable" placeholder="Enter table name">
+                <button type="submit">Execute</button>
+            </div>
+
+            <div id="insertSection" class="operation-section hidden">
+                <label for="insertTable">Table Name:</label>
+                <input type="text" id="insertTable" placeholder="Enter table name">
+                <label for="insertColumns">Columns:</label>
+                <input type="text" id="insertColumns" placeholder="e.g., id, name, email">
+                <label for="insertValues">Values:</label>
+                <input type="text" id="insertValues" placeholder="e.g., 1, 'John Doe', 'john@example.com'">
+                <button type="submit">Execute</button>
+            </div>
+
+            <div id="updateSection" class="operation-section hidden">
+                <label for="updateTable">Table Name:</label>
+                <input type="text" id="updateTable" placeholder="Enter table name">
+                <label for="updateField">Field to Update:</label>
+                <input type="text" id="updateField" placeholder="e.g., name='New Name'">
+                <label for="updateCondition">Condition:</label>
+                <input type="text" id="updateCondition" placeholder="e.g., id=1">
+                <button type="submit">Execute</button>
+            </div>
+
+            <div id="deleteSection" class="operation-section hidden">
+                <label for="deleteTable">Table Name:</label>
+                <input type="text" id="deleteTable" placeholder="Enter table name">
+                <label for="deleteCondition">Condition:</label>
+                <input type="text" id="deleteCondition" placeholder="e.g., id=1">
+                <button type="submit">Execute</button>
+            </div>
+
+            <div id="showTablesSection" class="operation-section hidden">
+                <p>No additional input required.</p>
+                <button type="submit">Show Tables</button>
+            </div>
+
+            <div id="customQuerySection" class="operation-section hidden">
+                <label for="customQuery">SQL Query:</label>
+                <textarea id="customQuery" rows="5" placeholder="Enter your custom SQL query here..."></textarea>
+                <button type="submit">Execute</button>
+            </div>
+        </form>
+
+        <div id="responseContainer" class="response-container hidden"></div>
+    </div>
+
+    <div class="theme-toggle" onclick="toggleTheme()">
+        <i class="fas fa-moon"></i>
+    </div>
+
+    <script>
+        function toggleTheme() {
+            const body = document.body;
+            const themeIcon = document.querySelector('.theme-toggle i');
+            const currentTheme = body.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+
+            body.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+        }
+
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.body.setAttribute('data-theme', savedTheme);
+        document.querySelector('.theme-toggle i').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
+
+        const navItems = document.querySelectorAll('.nav-item');
+        const sections = {
+            fetch_data: document.getElementById("fetchSection"),
+            insert: document.getElementById("insertSection"),
+            update: document.getElementById("updateSection"),
+            delete: document.getElementById("deleteSection"),
+            show_tables: document.getElementById("showTablesSection"),
+            custom_query: document.getElementById("customQuerySection"),
+        };
+
+        navItems.forEach(item => {
+            item.addEventListener('click', () => {
+                navItems.forEach(nav => nav.classList.remove('active'));
+                item.classList.add('active');
+                const operation = item.dataset.operation;
+                Object.values(sections).forEach(section => section.classList.add('hidden'));
+                sections[operation].classList.remove('hidden');
+            });
+        });
+
+        document.getElementById('crudForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const responseContainer = document.getElementById('responseContainer');
+            responseContainer.classList.add('hidden');
+
+            const operation = document.querySelector('.nav-item.active').dataset.operation;
+            let payload = {};
+            const getValue = id => document.getElementById(id).value.trim();
+
+            try {
+                switch(operation) {
+                    case 'fetch_data':
+                        payload = { operation, table_name: getValue('fetchTable') };
+                        break;
+                    case 'insert':
+                        payload = {
+                            operation,
+                            table_name: getValue('insertTable'),
+                            columns: getValue('insertColumns'),
+                            values: getValue('insertValues')
+                        };
+                        break;
+                    case 'update':
+                        payload = {
+                            operation,
+                            table_name: getValue('updateTable'),
+                            field: getValue('updateField'),
+                            condition: getValue('updateCondition')
+                        };
+                        break;
+                    case 'delete':
+                        payload = {
+                            operation,
+                            table_name: getValue('deleteTable'),
+                            condition: getValue('deleteCondition')
+                        };
+                        break;
+                    case 'show_tables':
+                        payload = { operation };
+                        break;
+                    case 'custom_query':
+                        payload = { query: getValue('customQuery') };
+                        break;
+                }
+
+                const response = await fetch('/execute_query', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                const result = await response.json();
+                let content = '';
+
+                if (result.error) {
+                    const errorContent = processError(result.error);
+                    content = `
+                        <div class="error-code">SQL Error ${errorContent.code}:</div>
+                        <div class="sql-error">${errorContent.message}</div>
+                    `;
+                    responseContainer.classList.add('error');
+                    responseContainer.classList.remove('warning', 'success');
+                } else if (result.warning) {
+                    content = `
+                        <div class="warning-code">Warning:</div>
+                        <div class="sql-warning">${processWarning(result.warning)}</div>
+                    `;
+                    responseContainer.classList.add('warning');
+                    responseContainer.classList.remove('error', 'success');
+                } else {
+                    let jsonString = JSON.stringify(result, null, 2);
+                    jsonString = jsonString
+                        .replace(/({|}|\[|\])/g, '<span style="color: var(--primary)">$1</span>')
+                        .replace(/"([^"]+)":/g, '<span style="color: var(--success)">"$1"</span>:')
+                        .replace(/: ("[^"]+"|true|false|null|\d+)/g, (match) =>
+                            match.replace(/(["\d\w]+)$/, '<span style="color: var(--accent)">$1</span>'));
+
+                    content = jsonString;
+                    responseContainer.classList.add('success');
+                    responseContainer.classList.remove('error', 'warning');
+                }
+
+                responseContainer.innerHTML = content;
+                responseContainer.classList.remove('hidden');
+            } catch (error) {
+                responseContainer.innerHTML = `
+                    <div class="error-code">Application Error:</div>
+                    <div class="sql-error">${error.message}</div>
+                `;
+                responseContainer.classList.add('error');
+                responseContainer.classList.remove('hidden');
+            }
+        });
+
+        function processError(errorString) {
+            const errorRegex = /\((\d+),\s*"((?:\\"|\\'|\\n|[^"])+)"\)/;
+            const match = errorString.match(errorRegex);
+
+            if (!match) return { code: '0000', message: errorString };
+
+            return {
+                code: match[1],
+                message: match[2]
+                    .replace(/\\n/g, '\n')
+                    .replace(/\\"/g, '"')
+                    .replace(/\\'/g, "'")
+                    .replace(/\\\\/g, '\\')
+            };
+        }
+
+        function processWarning(warningString) {
+            return warningString
+                .replace(/\\n/g, '\n')
+                .replace(/\\"/g, '"')
+                .replace(/\\'/g, "'")
+                .replace(/\\\\/g, '\\');
+        }
+    </script>
+</body>
+</html>

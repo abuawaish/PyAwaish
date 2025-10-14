@@ -1,0 +1,31 @@
+# Include important project metadata and configuration files
+include README.rst
+include LICENSE.txt
+include setup.py
+include pyproject.toml
+include requirements.txt
+include CHANGELOG.txt
+
+# Include all files in the templates directory (and subdirectories)
+recursive-include PyAwaish/templates *
+
+# Include all Python source files in the package
+recursive-include PyAwaish *.py
+
+# Include all PNG images in the static folder
+recursive-include PyAwaish/static *.png
+
+# Ensure all static assets (CSS, JS, images) are included if more are added later
+recursive-include PyAwaish/static *
+
+# Exclude compiled Python files and cache directories
+global-exclude *.pyc
+global-exclude __pycache__/
+
+# Exclude log and temporary files
+global-exclude *.log
+global-exclude *.tmp
+global-exclude .idea/
+
+# Exclude Windows-generated image cache files
+global-exclude Thumbs.db

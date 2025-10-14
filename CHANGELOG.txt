@@ -1,0 +1,13 @@
+[Version 1.6.6] - 2025-02-27
+=============================
+
+Added
+-----
+
+- Added more query analysis tools for avoiding misleading behavior.
+
+Improved
+--------
+
+- Refined warning and error messages in a polished manner
+

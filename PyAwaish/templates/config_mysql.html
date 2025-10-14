@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MySQL Configuration</title>
+  <link rel="icon" type="image/png" sizes="32x32" href="static/config.png"/>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Bootstrap Icons -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css" rel="stylesheet">
+  <style>
+    /* Base styling for the body */
+    body {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      margin: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+
+    /* Configuration card styling */
+    .config-card {
+      border: none;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+    }
+
+    /* Card header styling */
+    .card-header {
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      color: #fff;
+      padding: 2rem;
+      border-radius: 20px 20px 0 0;
+      text-align: center;
+    }
+
+    /* Input field styling */
+    .form-control {
+      border: 2px solid #e9ecef;
+      border-radius: 10px;
+      padding: 1rem;
+      transition: all 0.3s ease;
+    }
+    .form-control:focus {
+      border-color: #6a11cb;
+      box-shadow: 0 0 0 3px rgba(106, 17, 203, 0.1);
+    }
+
+    /* Toggle button styling */
+    .input-group-text,
+    .btn-outline-secondary {
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    /* Primary button styling */
+    .btn-primary {
+      background: linear-gradient(45deg, #6a11cb, #2575fc);
+      border: none;
+      padding: 0.8rem 2rem;
+      border-radius: 50px;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(106, 17, 203, 0.3);
+    }
+
+    /* Floating alert for messages */
+    .floating-alert {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      min-width: 300px;
+      text-align: center;
+      animation: slideDown 0.5s ease;
+      z-index: 1050;
+    }
+    @keyframes slideDown {
+      from { top: -50px; }
+      to { top: 20px; }
+    }
+
+    /* Transition for the eye icon toggle */
+    .bi-eye,
+    .bi-eye-slash {
+      transition: all 0.3s ease;
+    }
+  </style>
+</head>
+<body>
+  <main class="container">
+    <div class="row justify-content-center">
+      <div class="col-lg-6 col-md-8">
+        <div class="config-card">
+          <header class="card-header">
+            <h2 class="mb-0 display-5 fw-bold">
+              <i class="bi bi-database me-2"></i>MySQL Configuration
+            </h2>
+          </header>
+          <div class="card-body p-4">
+            <form action="/config_mysql" method="POST">
+              <div class="mb-4">
+                <label for="host" class="form-label fw-medium">Host Name</label>
+                <input type="text" class="form-control" id="host" name="host" placeholder="e.g., localhost or 127.0.0.1" required>
+              </div>
+              <div class="mb-4">
+                <label for="username" class="form-label fw-medium">User Name</label>
+                <input type="text" class="form-control" id="username" name="username" placeholder="Enter database username" required>
+              </div>
+              <div class="mb-4">
+                <label for="password" class="form-label fw-medium">Password</label>
+                <div class="input-group">
+                  <input type="password" class="form-control" id="password" name="password" placeholder="Enter database password">
+                  <button type="button" class="btn btn-outline-secondary" id="togglePassword" aria-label="Show password">
+                    <i class="bi bi-eye" id="eyeIcon"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="mb-4">
+                <label for="database" class="form-label fw-medium">Database Name</label>
+                <input type="text" class="form-control" id="database" name="database" placeholder="Enter database name" required>
+              </div>
+              <div class="d-grid mt-4">
+                <button type="submit" class="btn btn-primary btn-lg">
+                  <i class="bi bi-gear me-2"></i>Configure Database
+                </button>
+              </div>
+            </form>
+
+            <!-- Display flash messages if available -->
+            {% with messages = get_flashed_messages() %}
+              {% if messages %}
+                <div class="floating-alert alert alert-info alert-dismissible fade show mt-3" role="alert">
+                  {{ messages[0] }}
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+              {% endif %}
+            {% endwith %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bootstrap Bundle with Popper -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+    // Toggle password visibility and update icon accordingly
+    const togglePassword = document.querySelector('#togglePassword');
+    const passwordField = document.querySelector('#password');
+    const eyeIcon = document.querySelector('#eyeIcon');
+
+    togglePassword.addEventListener('click', () => {
+      const isPassword = passwordField.getAttribute('type') === 'password';
+      passwordField.setAttribute('type', isPassword ? 'text' : 'password');
+
+      if (isPassword) {
+        eyeIcon.classList.remove('bi-eye');
+        eyeIcon.classList.add('bi-eye-slash');
+        togglePassword.setAttribute('aria-label', 'Hide password');
+      } else {
+        eyeIcon.classList.remove('bi-eye-slash');
+        eyeIcon.classList.add('bi-eye');
+        togglePassword.setAttribute('aria-label', 'Show password');
+      }
+    });
+  </script>
+</body>
+</html>
