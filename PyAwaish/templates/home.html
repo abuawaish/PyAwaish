@@ -3,39 +3,59 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CRUD Operations Interface</title>
-    <link rel="icon" type="image/png" sizes="32x32" href="static/mysql.png"/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <title>CRUD • Enterprise Database Interface</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="static/mysql.png">
+    <!-- Inter font & JetBrains Mono for results -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
+        /* ---------- DESIGN SYSTEM — FASTER, GLASS, PRO ---------- */
         :root {
             --primary: #6366f1;
+            --primary-soft: rgba(99, 102, 241, 0.12);
+            --primary-gradient: linear-gradient(145deg, #6366f1, #4f46e5);
             --secondary: #4f46e5;
             --accent: #818cf8;
             --background: #ffffff;
-            --text: #1e293b;
+            --card-bg: rgba(255, 255, 255, 0.8);
+            --card-glass: rgba(255, 255, 255, 0.7);
+            --text: #0f172a;
+            --text-light: #475569;
             --border: #e2e8f0;
-            --card-bg: #ffffff;
-            --shadow: 0 1px 3px rgba(0,0,0,0.1);
-            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            --sidebar-width: 280px;
-            --error: #dc3545;
-            --warning: #ffc107;
-            --success: #28a745;
+            --border-soft: rgba(226, 232, 240, 0.5);
+            --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.02), 0 2px 6px rgba(0, 0, 0, 0.02);
+            --shadow-md: 0 16px 30px -8px rgba(0, 0, 0, 0.08), 0 4px 12px rgba(0, 0, 0, 0.02);
+            --shadow-lg: 0 24px 44px -12px rgba(99, 102, 241, 0.18);
+            --error: #ef4444;
+            --warning: #f59e0b;
+            --success: #10b981;
+            --sidebar-width: 290px;
+            --transition-all: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);  /* FASTER — 0.2s */
+            --transition-entrance: 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            --border-radius-card: 24px;
+            --border-radius-element: 14px;
+            --border-radius-button: 40px;
         }
 
         [data-theme="dark"] {
             --primary: #818cf8;
+            --primary-soft: rgba(129, 140, 248, 0.15);
+            --primary-gradient: linear-gradient(145deg, #818cf8, #6366f1);
             --secondary: #6366f1;
             --accent: #a5b4fc;
-            --background: #0f172a;
-            --text: #f8fafc;
-            --border: #334155;
-            --card-bg: #1e293b;
-            --shadow: 0 1px 3px rgba(0,0,0,0.3);
-            --error: #ff6b6b;
-            --warning: #ffd93d;
-            --success: #6cff7a;
+            --background: #0a0f1e;
+            --card-bg: rgba(24, 30, 46, 0.9);
+            --card-glass: rgba(20, 25, 40, 0.8);
+            --text: #f1f5f9;
+            --text-light: #cbd5e1;
+            --border: #2d374e;
+            --border-soft: rgba(45, 55, 78, 0.5);
+            --shadow-sm: 0 8px 20px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 16px 30px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 24px 44px rgba(0, 0, 0, 0.5);
+            --error: #f87171;
+            --warning: #fcd34d;
+            --success: #6ee7b7;
         }
 
         * {
@@ -45,203 +65,329 @@
         }
 
         body {
-            font-family: 'Inter', sans-serif;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
             background: var(--background);
             color: var(--text);
-            transition: var(--transition);
+            transition: background 0.25s ease, color 0.2s;
             line-height: 1.6;
             display: flex;
             min-height: 100vh;
+            backdrop-filter: blur(2px);
         }
 
+        /* ---------- SIDEBAR — GLASS, FAST ---------- */
         .sidebar {
             width: var(--sidebar-width);
-            background: var(--card-bg);
-            padding: 1.5rem;
-            border-right: 1px solid var(--border);
+            background: var(--card-glass);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            padding: 2rem 1.25rem;
+            border-right: 1px solid var(--border-soft);
             position: fixed;
             height: 100vh;
             overflow-y: auto;
             display: flex;
             flex-direction: column;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition-all);
+        }
+
+        .sidebar h2 {
+            font-weight: 700;
+            font-size: 1.7rem;
+            letter-spacing: -0.02em;
+            margin-bottom: 2.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: var(--primary-gradient);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
         }
 
         .nav-item {
             display: flex;
             align-items: center;
             gap: 1rem;
-            padding: 0.75rem 1rem;
-            margin: 0.5rem 0;
-            border-radius: 0.5rem;
+            padding: 0.8rem 1.2rem;
+            margin: 0.35rem 0;
+            border-radius: 16px;
             color: var(--text);
             text-decoration: none;
-            transition: var(--transition);
+            transition: var(--transition-all);
             cursor: pointer;
-        }
-
-        .nav-item:hover {
-            background: rgba(99, 102, 241, 0.1);
-        }
-
-        .nav-item.active {
-            background: var(--primary);
-            color: white;
+            font-weight: 500;
+            border: 1px solid transparent;
         }
 
         .nav-item i {
             width: 24px;
             text-align: center;
+            font-size: 1.2rem;
+            color: var(--text-light);
+            transition: var(--transition-all);
         }
 
+        .nav-item:hover {
+            background: var(--primary-soft);
+            border-color: var(--primary);
+            transform: translateX(6px);
+        }
+
+        .nav-item.active {
+            background: var(--primary-gradient);
+            color: white;
+            box-shadow: var(--shadow-lg);
+            border: none;
+        }
+
+        .nav-item.active i {
+            color: white;
+        }
+
+        /* ---------- MAIN CONTENT — GLASS CARDS, FAST ANIMATIONS ---------- */
         .main-content {
             flex: 1;
             margin-left: var(--sidebar-width);
-            padding: 2rem;
+            padding: 2.5rem;
+            animation: fadeSlideIn 0.25s var(--transition-entrance); /* FASTER */
         }
 
+        @keyframes fadeSlideIn {
+            0% { opacity: 0; transform: translateY(12px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+
+        .page-header {
+            margin-bottom: 2.5rem;
+        }
+
+        .page-header h1 {
+            font-weight: 700;
+            font-size: 2.2rem;
+            letter-spacing: -0.02em;
+            background: linear-gradient(145deg, var(--primary), var(--accent));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0.5rem;
+        }
+
+        .page-header p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        /* ---------- OPERATION CARDS — MODERN GLASS ---------- */
+        .operation-section {
+            background: var(--card-glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: var(--border-radius-card);
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: var(--shadow-sm);
+            border: 1px solid var(--border-soft);
+            transition: var(--transition-all);
+            animation: cardEntrance 0.22s ease-out;  /* FASTER */
+        }
+
+        .operation-section:hover {
+            box-shadow: var(--shadow-md);
+            border-color: var(--primary);
+        }
+
+        @keyframes cardEntrance {
+            0% { opacity: 0; transform: scale(0.98) translateY(10px); }
+            100% { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        /* ---------- FORM ELEMENTS — PREMIUM, FAST FOCUS ---------- */
+        label {
+            display: block;
+            margin-bottom: 0.4rem;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+            color: var(--text-light);
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 0.9rem 1.2rem;
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius-element);
+            background: var(--card-bg);
+            color: var(--text);
+            transition: all 0.18s ease;  /* FASTER */
+            margin-bottom: 1.2rem;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.95rem;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-soft);
+            outline: none;
+            background: var(--card-bg);
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 120px;
+        }
+
+        button[type="submit"] {
+            background: var(--primary-gradient);
+            color: white;
+            padding: 0.9rem 2rem;
+            border: none;
+            border-radius: var(--border-radius-button);
+            font-weight: 600;
+            font-size: 1rem;
+            letter-spacing: 0.01em;
+            cursor: pointer;
+            transition: all 0.18s ease;  /* FASTER */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.6rem;
+            box-shadow: 0 8px 16px rgba(99, 102, 241, 0.2);
+        }
+
+        button[type="submit"] i {
+            font-size: 1.1rem;
+            transition: transform 0.15s;
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 16px 24px rgba(99, 102, 241, 0.3);
+        }
+
+        button[type="submit"]:hover i {
+            transform: rotate(10deg);
+        }
+
+        button[type="submit"]:active {
+            transform: translateY(-1px);
+        }
+
+        /* ---------- RESPONSE CONTAINER — SYNTACTIC, FAST FADE ---------- */
+        .response-container {
+            background: var(--card-glass);
+            backdrop-filter: blur(12px);
+            border-radius: var(--border-radius-card);
+            padding: 1.6rem;
+            margin-top: 2rem;
+            border: 2px solid var(--border);
+            max-height: 450px;
+            overflow-y: auto;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+            box-shadow: var(--shadow-sm);
+            transition: all 0.2s;
+            animation: fadeFaster 0.2s ease;  /* FASTER */
+        }
+
+        @keyframes fadeFaster {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+
+        .response-container.error {
+            border-color: var(--error);
+            background: rgba(239, 68, 68, 0.05);
+        }
+
+        .response-container.warning {
+            border-color: var(--warning);
+            background: rgba(245, 158, 11, 0.05);
+        }
+
+        .response-container.success {
+            border-color: var(--success);
+            background: rgba(16, 185, 129, 0.05);
+        }
+
+        /* syntax highlighting inside response */
+        .sql-error, .sql-warning {
+            color: var(--text);
+            white-space: pre-wrap;
+            line-height: 1.5;
+            padding: 1rem;
+            background: rgba(0, 0, 0, 0.03);
+            border-radius: 12px;
+            margin-top: 0.5rem;
+            font-weight: 500;
+        }
+
+        .error-code { color: var(--error); font-weight: 700; }
+        .warning-code { color: var(--warning); font-weight: 700; }
+
+        /* ---------- THEME TOGGLE — FASTER ROTATION ---------- */
         .theme-toggle {
             position: fixed;
             bottom: 2rem;
             right: 2rem;
-            background: var(--card-bg);
-            border: 2px solid var(--border);
-            width: 50px;
-            height: 50px;
+            background: var(--card-glass);
+            backdrop-filter: blur(12px);
+            border: 2px solid var(--border-soft);
+            width: 54px;
+            height: 54px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); /* FASTER & springy */
+            box-shadow: var(--shadow-md);
+            font-size: 1.5rem;
+            color: var(--text);
+            z-index: 100;
         }
 
         .theme-toggle:hover {
             transform: rotate(180deg) scale(1.1);
+            border-color: var(--primary);
+            color: var(--primary);
         }
 
-        .operation-section {
-            background: var(--card-bg);
-            border-radius: 1rem;
-            padding: 1.5rem;
-            margin-bottom: 1.5rem;
-            box-shadow: var(--shadow);
-            animation: slideUp 0.4s ease;
-        }
-
-        .response-container {
-            background: var(--card-bg);
-            border-radius: 1rem;
-            padding: 1rem;
-            margin-top: 2rem;
-            border: 2px solid var(--border);
-            max-height: 400px;
-            overflow-y: auto;
-            font-family: 'JetBrains Mono', monospace;
-            white-space: pre-wrap;
-            animation: fadeIn 0.4s ease;
-        }
-
-        .response-container.error {
-            color: var(--error);
-            border-color: var(--error);
-            background: rgba(220, 53, 69, 0.1);
-        }
-
-        .response-container.warning {
-            color: var(--warning);
-            border-color: var(--warning);
-            background: rgba(255, 193, 7, 0.1);
-        }
-
-        .response-container.success {
-            color: var(--success);
-            border-color: var(--success);
-            background: rgba(40, 167, 69, 0.1);
-        }
-
-        .sql-error, .sql-warning {
-            color: var(--text);
-            white-space: pre-wrap;
-            line-height: 1.4;
-            padding: 1rem;
-            background: rgba(0, 0, 0, 0.05);
-            border-radius: 0.5rem;
-            margin-top: 0.5rem;
-        }
-
-        .error-code, .warning-code {
-            font-weight: bold;
-            margin-bottom: 0.5rem;
-        }
-
-        .error-code { color: var(--error); }
-        .warning-code { color: var(--warning); }
-
-        label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 500;
-            color: var(--text);
-        }
-
-        input, select, textarea {
-            width: 100%;
-            padding: 0.75rem 1rem;
-            border: 2px solid var(--border);
-            border-radius: 0.5rem;
-            background: var(--card-bg);
-            color: var(--text);
-            transition: var(--transition);
-            margin-bottom: 1rem;
-        }
-
-        button[type="submit"] {
-            background: linear-gradient(135deg, var(--primary), var(--secondary));
-            color: white;
-            padding: 0.875rem 1.5rem;
-            border: none;
-            border-radius: 0.5rem;
-            font-weight: 600;
-            cursor: pointer;
-            transition: var(--transition);
-        }
-
-        button[type="submit"]:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(99, 102, 241, 0.3);
-        }
-
-        .hidden {
-            display: none;
-        }
-
+        /* ---------- ABOUT SECTION — REFINED ---------- */
         .about-section {
             margin-top: auto;
-            padding: 1.5rem 0 0;
-            border-top: 1px solid var(--border);
-        }
-
-        .about-content {
-            opacity: 0.8;
-            font-size: 0.9rem;
+            padding: 1.8rem 0 0.8rem;
+            border-top: 1px solid var(--border-soft);
+            margin-top: 2rem;
         }
 
         .about-title {
-            font-size: 1.1rem;
-            font-weight: 600;
-            margin-bottom: 0.75rem;
+            font-size: 1rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
             color: var(--primary);
             display: flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.6rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .about-content p {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
         }
 
         .author-info {
-            margin: 0.5rem 0;
             display: flex;
             flex-direction: column;
-            gap: 0.25rem;
+            gap: 0.6rem;
         }
 
         .author-link {
@@ -249,53 +395,89 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            gap: 0.5rem;
-            transition: var(--transition);
-            padding: 0.25rem 0;
+            gap: 0.75rem;
+            transition: var(--transition-all);
+            padding: 0.4rem 0.6rem;
+            border-radius: 12px;
+            font-weight: 500;
         }
 
         .author-link:hover {
+            background: var(--primary-soft);
             color: var(--primary);
-            transform: translateX(5px);
+            transform: translateX(6px);
         }
 
-        .about-icon {
-            font-size: 1.25rem;
-            width: 24px;
+        .author-link i {
+            width: 20px;
+            color: var(--text-light);
+            transition: var(--transition-all);
         }
 
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
+        .author-link:hover i {
+            color: var(--primary);
         }
 
-        @keyframes slideUp {
-            from { transform: translateY(20px); opacity: 0; }
-            to { transform: translateY(0); opacity: 1; }
+        .hidden {
+            display: none;
         }
 
+        /* ---------- RESPONSIVE — PERFECT ON MOBILE ---------- */
         @media (max-width: 768px) {
             .sidebar {
                 width: 100%;
-                position: static;
+                position: relative;
                 height: auto;
+                backdrop-filter: blur(20px);
             }
 
             .main-content {
                 margin-left: 0;
-                padding: 1rem;
+                padding: 1.5rem;
             }
 
             .theme-toggle {
                 bottom: 1rem;
                 right: 1rem;
+                width: 48px;
+                height: 48px;
             }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+        }
+
+        /* placeholder style */
+        ::placeholder {
+            color: var(--text-light);
+            opacity: 0.6;
+            font-weight: 400;
+        }
+
+        /* custom scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: var(--border);
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary);
         }
     </style>
 </head>
 <body>
+    <!-- SIDEBAR — glassmorphism, micro-interactions -->
     <nav class="sidebar">
-        <h2 style="margin-bottom: 2rem; color: var(--primary);">Operations</h2>
+        <h2>
+            <i class="fas fa-database"></i> CRUD<span style="font-weight:300;">.pro</span>
+        </h2>
         <div class="nav-item active" data-operation="fetch_data">
             <i class="fas fa-download"></i>
             Fetch Data
@@ -321,15 +503,16 @@
             Custom Query
         </div>
 
+        <!-- ABOUT — refined, faster hover -->
         <div class="about-section">
             <div class="about-title">
-                <i class="fas fa-info-circle about-icon"></i>
-                About Section
+                <i class="fas fa-info-circle"></i>
+                about
             </div>
             <div class="about-content">
-                <p>A professional database interface featuring an enhanced feedback system, developed by :</p>
+                <p>Enterprise-grade database interface with intelligent feedback & lightning‑fast response.</p>
                 <div class="author-info">
-                    <a href="https://www.linkedin.com/in/abu-awaish-a6523b258/" class="author-link">
+                    <a href="https://www.linkedin.com/in/abu-awaish-a6523b258/" class="author-link" target="_blank" rel="noopener">
                         <i class="fas fa-user-alt"></i>
                         Abu Awaish
                     </a>
@@ -337,75 +520,88 @@
                         <i class="fas fa-envelope"></i>
                         abuawaish7@gmail.com
                     </a>
-                    <a href="https://github.com/abuawaish" target="_blank" class="author-link">
+                    <a href="https://github.com/abuawaish" target="_blank" rel="noopener" class="author-link">
                         <i class="fab fa-github"></i>
-                        github.com/abuawaish
+                        github/abuawaish
                     </a>
                 </div>
             </div>
         </div>
     </nav>
 
+    <!-- MAIN PANEL — dynamic forms, smooth entrance -->
     <div class="main-content">
-        <header>
-            <h1>Database Operations Interface</h1>
+        <header class="page-header">
+            <h1><i class="fas fa-terminal" style="font-size:2rem; margin-right:12px;"></i> Database Operations</h1>
+            <p>Execute SQL commands with real‑time syntax feedback & enhanced error diagnostics</p>
         </header>
 
         <form id="crudForm">
+            <!-- FETCH -->
             <div id="fetchSection" class="operation-section">
-                <label for="fetchTable">Table Name:</label>
-                <input type="text" id="fetchTable" placeholder="Enter table name">
-                <button type="submit">Execute</button>
+                <label for="fetchTable"><i class="fas fa-table me-1"></i> Table Name</label>
+                <input type="text" id="fetchTable" placeholder="e.g., users, products" autocomplete="off">
+                <button type="submit"><i class="fas fa-play"></i> Execute Fetch</button>
             </div>
 
+            <!-- INSERT -->
             <div id="insertSection" class="operation-section hidden">
-                <label for="insertTable">Table Name:</label>
-                <input type="text" id="insertTable" placeholder="Enter table name">
-                <label for="insertColumns">Columns:</label>
+                <label for="insertTable">📋 Table Name</label>
+                <input type="text" id="insertTable" placeholder="e.g., employees">
+                <label for="insertColumns">📌 Columns (comma‑separated)</label>
                 <input type="text" id="insertColumns" placeholder="e.g., id, name, email">
-                <label for="insertValues">Values:</label>
-                <input type="text" id="insertValues" placeholder="e.g., 1, 'John Doe', 'john@example.com'">
-                <button type="submit">Execute</button>
+                <label for="insertValues">🔣 Values (SQL format)</label>
+                <input type="text" id="insertValues" placeholder="e.g., 1, 'John', 'john@doe.com'">
+                <button type="submit"><i class="fas fa-save"></i> Execute Insert</button>
             </div>
 
+            <!-- UPDATE -->
             <div id="updateSection" class="operation-section hidden">
-                <label for="updateTable">Table Name:</label>
-                <input type="text" id="updateTable" placeholder="Enter table name">
-                <label for="updateField">Field to Update:</label>
-                <input type="text" id="updateField" placeholder="e.g., name='New Name'">
-                <label for="updateCondition">Condition:</label>
-                <input type="text" id="updateCondition" placeholder="e.g., id=1">
-                <button type="submit">Execute</button>
+                <label for="updateTable">📁 Table Name</label>
+                <input type="text" id="updateTable" placeholder="table name">
+                <label for="updateField">✏️ SET clause</label>
+                <input type="text" id="updateField" placeholder="e.g., name='New', status=1">
+                <label for="updateCondition">🔍 WHERE condition</label>
+                <input type="text" id="updateCondition" placeholder="e.g., id = 10">
+                <button type="submit"><i class="fas fa-sync"></i> Execute Update</button>
             </div>
 
+            <!-- DELETE -->
             <div id="deleteSection" class="operation-section hidden">
-                <label for="deleteTable">Table Name:</label>
-                <input type="text" id="deleteTable" placeholder="Enter table name">
-                <label for="deleteCondition">Condition:</label>
-                <input type="text" id="deleteCondition" placeholder="e.g., id=1">
-                <button type="submit">Execute</button>
+                <label for="deleteTable">🗑️ Table Name</label>
+                <input type="text" id="deleteTable" placeholder="table">
+                <label for="deleteCondition">⚠️ WHERE condition</label>
+                <input type="text" id="deleteCondition" placeholder="e.g., id = 5">
+                <button type="submit"><i class="fas fa-trash"></i> Execute Delete</button>
             </div>
 
+            <!-- SHOW TABLES -->
             <div id="showTablesSection" class="operation-section hidden">
-                <p>No additional input required.</p>
-                <button type="submit">Show Tables</button>
+                <div style="padding:0.5rem 0 1rem; color: var(--text-light);">
+                    <i class="fas fa-info-circle"></i> No parameters required — lists all tables in current schema.
+                </div>
+                <button type="submit"><i class="fas fa-list-ul"></i> Show Tables</button>
             </div>
 
+            <!-- CUSTOM QUERY -->
             <div id="customQuerySection" class="operation-section hidden">
-                <label for="customQuery">SQL Query:</label>
-                <textarea id="customQuery" rows="5" placeholder="Enter your custom SQL query here..."></textarea>
-                <button type="submit">Execute</button>
+                <label for="customQuery">⚡ SQL Query (any DDL/DML)</label>
+                <textarea id="customQuery" rows="5" placeholder="SELECT * FROM users WHERE status = 'active';"></textarea>
+                <button type="submit"><i class="fas fa-bolt"></i> Run Custom Query</button>
             </div>
         </form>
 
+        <!-- RESPONSE DISPLAY — fast fade, syntax glow -->
         <div id="responseContainer" class="response-container hidden"></div>
     </div>
 
-    <div class="theme-toggle" onclick="toggleTheme()">
+    <!-- THEME TOGGLE — faster rotation & spring -->
+    <div class="theme-toggle" onclick="toggleTheme()" aria-label="Toggle dark/light mode">
         <i class="fas fa-moon"></i>
     </div>
 
     <script>
+        // ---------- FAST THEME TOGGLE WITH LOCAL STORAGE ----------
         function toggleTheme() {
             const body = document.body;
             const themeIcon = document.querySelector('.theme-toggle i');
@@ -417,10 +613,12 @@
             themeIcon.className = newTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
         }
 
+        // apply saved theme
         const savedTheme = localStorage.getItem('theme') || 'light';
         document.body.setAttribute('data-theme', savedTheme);
         document.querySelector('.theme-toggle i').className = savedTheme === 'dark' ? 'fas fa-sun' : 'fas fa-moon';
 
+        // ---------- SIDEBAR NAVIGATION — INSTANT SWITCH ----------
         const navItems = document.querySelectorAll('.nav-item');
         const sections = {
             fetch_data: document.getElementById("fetchSection"),
@@ -441,6 +639,7 @@
             });
         });
 
+        // ---------- FORM SUBMISSION — ENHANCED PAYLOAD & RESPONSE ----------
         document.getElementById('crudForm').addEventListener('submit', async (e) => {
             e.preventDefault();
             const responseContainer = document.getElementById('responseContainer');
@@ -498,27 +697,35 @@
                 if (result.error) {
                     const errorContent = processError(result.error);
                     content = `
-                        <div class="error-code">SQL Error ${errorContent.code}:</div>
-                        <div class="sql-error">${errorContent.message}</div>
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                            <i class="fas fa-exclamation-triangle" style="color:var(--error); font-size:1.5rem;"></i>
+                            <span class="error-code">SQL Error ${errorContent.code}</span>
+                        </div>
+                        <div class="sql-error">${escapeHTML(errorContent.message)}</div>
                     `;
                     responseContainer.classList.add('error');
                     responseContainer.classList.remove('warning', 'success');
                 } else if (result.warning) {
                     content = `
-                        <div class="warning-code">Warning:</div>
-                        <div class="sql-warning">${processWarning(result.warning)}</div>
+                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                            <i class="fas fa-exclamation-circle" style="color:var(--warning); font-size:1.5rem;"></i>
+                            <span class="warning-code">SQL Warning</span>
+                        </div>
+                        <div class="sql-warning">${escapeHTML(processWarning(result.warning))}</div>
                     `;
                     responseContainer.classList.add('warning');
                     responseContainer.classList.remove('error', 'success');
                 } else {
+                    // syntax-highlighted JSON
                     let jsonString = JSON.stringify(result, null, 2);
                     jsonString = jsonString
-                        .replace(/({|}|\[|\])/g, '<span style="color: var(--primary)">$1</span>')
-                        .replace(/"([^"]+)":/g, '<span style="color: var(--success)">"$1"</span>:')
-                        .replace(/: ("[^"]+"|true|false|null|\d+)/g, (match) =>
-                            match.replace(/(["\d\w]+)$/, '<span style="color: var(--accent)">$1</span>'));
+                        .replace(/({|}|\[|\])/g, '<span style="color: var(--primary); font-weight:600;">$1</span>')
+                        .replace(/"([^"]+)":/g, '<span style="color: var(--success);">"$1"</span>:')
+                        .replace(/: ("[^"]*"|true|false|null|\d+)/g, (match) => {
+                            return match.replace(/(["\d\w]+)$/, '<span style="color: var(--accent);">$1</span>');
+                        });
 
-                    content = jsonString;
+                    content = `<pre style="margin:0; font-family:inherit;">${jsonString}</pre>`;
                     responseContainer.classList.add('success');
                     responseContainer.classList.remove('error', 'warning');
                 }
@@ -527,14 +734,18 @@
                 responseContainer.classList.remove('hidden');
             } catch (error) {
                 responseContainer.innerHTML = `
-                    <div class="error-code">Application Error:</div>
-                    <div class="sql-error">${error.message}</div>
+                    <div style="display:flex; align-items:center; gap:10px;">
+                        <i class="fas fa-bug" style="color:var(--error);"></i>
+                        <span class="error-code">Application Error</span>
+                    </div>
+                    <div class="sql-error">${escapeHTML(error.message)}</div>
                 `;
                 responseContainer.classList.add('error');
                 responseContainer.classList.remove('hidden');
             }
         });
 
+        // ---------- HELPER: ERROR PARSING (same robust logic) ----------
         function processError(errorString) {
             const errorRegex = /\((\d+),\s*"((?:\\"|\\'|\\n|[^"])+)"\)/;
             const match = errorString.match(errorRegex);
@@ -557,6 +768,17 @@
                 .replace(/\\"/g, '"')
                 .replace(/\\'/g, "'")
                 .replace(/\\\\/g, '\\');
+        }
+
+        // escape for security
+        function escapeHTML(unsafe) {
+            return unsafe.replace(/[&<>"]/g, function(m) {
+                if(m === '&') return '&amp;';
+                if(m === '<') return '&lt;';
+                if(m === '>') return '&gt;';
+                if(m === '"') return '&quot;';
+                return m;
+            });
         }
     </script>
 </body>
