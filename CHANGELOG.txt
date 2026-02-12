@@ -1,13 +1,13 @@
-[Version 1.6.6] - 2025-02-27
+[Version 1.6.7] - 2026-02-12
 =============================
-
-Added
------
-
-- Added more query analysis tools for avoiding misleading behavior.
 
 Improved
 --------
 
-- Refined warning and error messages in a polished manner
-
+- PERFORMANCE: UI animations accelerated 2x (now 0.18s-0.22s)
+- REDESIGN: Glassmorphism cards with backdrop-filter blur
+- INTERACTIONS: Faster hover states, spring theme toggle, icon rotations
+- RESPONSE: Syntax-highlighted JSON with semantic error/warning icons
+- SECURITY: Added XSS escaping for error messages
+- FONTS: JetBrains Mono for console output
+- FIXED: Theme persistence and overflow wrapping
