@@ -8,7 +8,7 @@ with open('CHANGELOG.txt', encoding='utf-8') as changelog_file:
 
 setup(
     name="PyAwaish",
-    version="1.6.6",
+    version="1.6.7",
     author="Abu Awaish",
     author_email="abuawaish7@gmail.com",
     description="A Python package for building dynamic MySQL-powered web applications with template support",
@@ -26,9 +26,10 @@ setup(
     license="MIT",
     license_files=['LICENSE.txt'],  # Explicitly include the license file
     install_requires=[
-        'Flask',
-        'Flask-MySQLdb',
-        'python-dotenv',
+        'Flask==3.1.2',
+        'Flask-MySQLdb==2.0.0',
+        'python-dotenv==1.2.1',
+        'mysqlclient==2.2.8',
     ],
     keywords="web application flask mysql dynamic templates",
     classifiers=[
