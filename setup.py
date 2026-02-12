@@ -8,7 +8,7 @@ with open('CHANGELOG.txt', encoding='utf-8') as changelog_file:
 
 setup(
     name="PyAwaish",
-    version="1.6.7",
+    version="1.6.8",
     author="Abu Awaish",
     author_email="abuawaish7@gmail.com",
     description="A Python package for building dynamic MySQL-powered web applications with template support",
