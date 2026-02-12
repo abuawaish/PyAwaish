@@ -1,4 +1,4 @@
-[Version 1.6.7] - 2026-02-12
+[Version 1.6.8] - 2026-02-12
 =============================
 
 Improved
@@ -11,3 +11,8 @@ Improved
 - SECURITY: Added XSS escaping for error messages
 - FONTS: JetBrains Mono for console output
 - FIXED: Theme persistence and overflow wrapping
+
+Bug Fix
+--------
+
+- Eliminated misleading logic from the codebase.
