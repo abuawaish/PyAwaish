@@ -29,12 +29,12 @@
             --error: #ef4444;
             --warning: #f59e0b;
             --success: #10b981;
-            --sidebar-width: 290px;
+            --sidebar-width: 232px;
             --transition-all: all 0.2s cubic-bezier(0.23, 1, 0.32, 1);  /* FASTER — 0.2s */
             --transition-entrance: 0.22s cubic-bezier(0.16, 1, 0.3, 1);
-            --border-radius-card: 24px;
-            --border-radius-element: 14px;
-            --border-radius-button: 40px;
+            --border-radius-card: 19px;
+            --border-radius-element: 11px;
+            --border-radius-button: 32px;
         }
 
         [data-theme="dark"] {
@@ -62,6 +62,12 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+        }
+
+        html {
+            /* Compact density mode: shrinks every rem-based size (padding,
+               margin, font-size, gap) by ~20% across the whole UI. */
+            font-size: 80%;
         }
 
         body {
@@ -122,7 +128,7 @@
         }
 
         .nav-item i {
-            width: 24px;
+            width: 19px;
             text-align: center;
             font-size: 1.2rem;
             color: var(--text-light);
@@ -148,7 +154,8 @@
 
         /* ---------- MAIN CONTENT — GLASS CARDS, FAST ANIMATIONS ---------- */
         .main-content {
-            flex: 1;
+            width: 80%;
+            max-width: 80%;
             margin-left: var(--sidebar-width);
             padding: 2.5rem;
             animation: fadeSlideIn 0.25s var(--transition-entrance); /* FASTER */
@@ -280,16 +287,14 @@
             background: var(--card-glass);
             backdrop-filter: blur(12px);
             border-radius: var(--border-radius-card);
-            padding: 1.6rem;
+            padding: 1.2rem;
             margin-top: 2rem;
             border: 2px solid var(--border);
-            max-height: 450px;
-            overflow-y: auto;
+            max-height: none;
+            overflow: visible;
             font-family: 'JetBrains Mono', monospace;
             font-size: 0.9rem;
             line-height: 1.6;
-            white-space: pre-wrap;
-            word-break: break-word;
             box-shadow: var(--shadow-sm);
             transition: all 0.2s;
             animation: fadeFaster 0.2s ease;  /* FASTER */
@@ -319,6 +324,7 @@
         .sql-error, .sql-warning {
             color: var(--text);
             white-space: pre-wrap;
+            word-break: break-word;
             line-height: 1.5;
             padding: 1rem;
             background: rgba(0, 0, 0, 0.03);
@@ -338,8 +344,8 @@
             background: var(--card-glass);
             backdrop-filter: blur(12px);
             border: 2px solid var(--border-soft);
-            width: 54px;
-            height: 54px;
+            width: 43px;
+            height: 43px;
             border-radius: 50%;
             display: flex;
             align-items: center;
@@ -409,7 +415,7 @@
         }
 
         .author-link i {
-            width: 20px;
+            width: 16px;
             color: var(--text-light);
             transition: var(--transition-all);
         }
@@ -422,6 +428,186 @@
             display: none;
         }
 
+        /* ---------- TABLE DISPLAY — CLEAN PROFESSIONAL STYLING ---------- */
+        .results-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .results-title {
+            font-size: 1.15rem;
+            font-weight: 600;
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .record-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(145deg, rgba(16, 185, 129, 0.15), rgba(16, 185, 129, 0.08));
+            color: var(--success);
+            padding: 0.4rem 0.9rem;
+            border-radius: 16px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            border: 1px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .results-actions {
+            margin-left: auto;
+        }
+
+        .export-btn {
+            background: linear-gradient(145deg, var(--success), #059669);
+            color: white;
+            padding: 0.6rem 1.2rem;
+            border: none;
+            border-radius: var(--border-radius-button);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.18s ease;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 8px 16px rgba(16, 185, 129, 0.2);
+            white-space: nowrap;
+        }
+
+        .export-btn i {
+            font-size: 0.95rem;
+        }
+
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 12px 20px rgba(16, 185, 129, 0.3);
+        }
+
+        .export-btn:active {
+            transform: translateY(0px);
+        }
+
+        .execution-summary {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            padding: 0.8rem 1rem;
+            background: linear-gradient(145deg, rgba(16, 185, 129, 0.08), rgba(16, 185, 129, 0.04));
+            border-left: 3px solid var(--success);
+            border-radius: 6px;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            color: var(--text-light);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .execution-summary i {
+            color: var(--success);
+            font-size: 1rem;
+        }
+
+        .search-filter-container {
+            margin-bottom: 1rem;
+        }
+
+        .search-filter-container input {
+            width: 100%;
+            padding: 0.7rem 1rem;
+            border: 2px solid var(--border);
+            border-radius: var(--border-radius-element);
+            background: var(--card-bg);
+            color: var(--text);
+            font-family: 'Inter', system-ui;
+            font-size: 0.95rem;
+            transition: all 0.18s ease;
+            margin-bottom: 0;
+        }
+
+        .search-filter-container input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px var(--primary-soft);
+            outline: none;
+        }
+
+        .search-filter-container input::placeholder {
+            color: var(--text-light);
+            opacity: 0.6;
+        }
+
+        .data-table {
+            width: 100%;
+            min-width: 480px;
+            border-collapse: collapse;
+            margin-top: 0;
+            background: var(--card-bg);
+            border-radius: var(--border-radius-element);
+            overflow: hidden;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .data-table thead {
+            background: linear-gradient(145deg, rgba(99, 102, 241, 0.12), rgba(129, 140, 248, 0.08));
+            border-bottom: 2px solid var(--primary);
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .data-table th {
+            padding: 0.9rem 1rem;
+            text-align: left;
+            font-weight: 700;
+            color: var(--primary);
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            background: inherit;
+            white-space: nowrap;
+        }
+
+        .data-table td {
+            padding: 0.8rem 1rem;
+            border-bottom: 1px solid var(--border-soft);
+            font-size: 0.95rem;
+            color: var(--text);
+        }
+
+        .data-table tbody tr {
+            transition: background 0.15s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background: var(--primary-soft);
+        }
+
+        .data-table tbody tr:last-child td {
+            border-bottom: none;
+        }
+
+        .row-number {
+            font-weight: 700;
+            color: var(--accent);
+            font-size: 0.9rem;
+            width: 32px;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .table-wrapper {
+            max-height: 480px;
+            overflow-y: auto;
+            overflow-x: auto;
+            border-radius: var(--border-radius-element);
+        }
+
         /* ---------- RESPONSIVE — PERFECT ON MOBILE ---------- */
         @media (max-width: 768px) {
             .sidebar {
@@ -432,6 +618,8 @@
             }
 
             .main-content {
+                width: 100%;
+                max-width: 100%;
                 margin-left: 0;
                 padding: 1.5rem;
             }
@@ -439,12 +627,20 @@
             .theme-toggle {
                 bottom: 1rem;
                 right: 1rem;
-                width: 48px;
-                height: 48px;
+                width: 38px;
+                height: 38px;
             }
 
             .page-header h1 {
                 font-size: 1.8rem;
+            }
+
+            .results-header {
+                align-items: flex-start;
+            }
+
+            .results-actions {
+                margin-left: 0;
             }
         }
 
@@ -457,15 +653,15 @@
 
         /* custom scrollbar */
         ::-webkit-scrollbar {
-            width: 8px;
-            height: 8px;
+            width: 6px;
+            height: 6px;
         }
         ::-webkit-scrollbar-track {
             background: transparent;
         }
         ::-webkit-scrollbar-thumb {
             background: var(--border);
-            border-radius: 10px;
+            border-radius: 8px;
         }
         ::-webkit-scrollbar-thumb:hover {
             background: var(--primary);
@@ -532,7 +728,7 @@
     <!-- MAIN PANEL — dynamic forms, smooth entrance -->
     <div class="main-content">
         <header class="page-header">
-            <h1><i class="fas fa-terminal" style="font-size:2rem; margin-right:12px;"></i> Database Operations</h1>
+            <h1><i class="fas fa-terminal" style="font-size:2rem; margin-right:10px;"></i> Database Operations</h1>
             <p>Execute SQL commands with real‑time syntax feedback & enhanced error diagnostics</p>
         </header>
 
@@ -697,7 +893,7 @@
                 if (result.error) {
                     const errorContent = processError(result.error);
                     content = `
-                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
                             <i class="fas fa-exclamation-triangle" style="color:var(--error); font-size:1.5rem;"></i>
                             <span class="error-code">SQL Error ${errorContent.code}</span>
                         </div>
@@ -707,7 +903,7 @@
                     responseContainer.classList.remove('warning', 'success');
                 } else if (result.warning) {
                     content = `
-                        <div style="display:flex; align-items:center; gap:10px; margin-bottom:12px;">
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
                             <i class="fas fa-exclamation-circle" style="color:var(--warning); font-size:1.5rem;"></i>
                             <span class="warning-code">SQL Warning</span>
                         </div>
@@ -715,6 +911,37 @@
                     `;
                     responseContainer.classList.add('warning');
                     responseContainer.classList.remove('error', 'success');
+                } else if (result.data) {
+                    // Render data as HTML table
+                    content = renderDataTable(result.data);
+                    responseContainer.classList.add('success');
+                    responseContainer.classList.remove('error', 'warning');
+                } else if (result.message) {
+                    content = `
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                            <i class="fas fa-check-circle" style="color:var(--success); font-size:1.5rem;"></i>
+                            <span style="color:var(--success); font-weight:600;">Success</span>
+                        </div>
+                        <div class="sql-warning">${escapeHTML(result.message)}</div>
+                    `;
+                    responseContainer.classList.add('success');
+                    responseContainer.classList.remove('error', 'warning');
+                } else if (result.tables) {
+                    // Render tables list
+                    let tableList = '<ul style="margin:0; padding-left:1.5rem;">';
+                    Object.entries(result.tables).forEach(([key, table]) => {
+                        tableList += `<li style="padding:0.5rem 0;">${escapeHTML(table)}</li>`;
+                    });
+                    tableList += '</ul>';
+                    content = `
+                        <div style="display:flex; align-items:center; gap:8px; margin-bottom:10px;">
+                            <i class="fas fa-list" style="color:var(--primary); font-size:1.5rem;"></i>
+                            <span style="color:var(--primary); font-weight:600;">Available Tables</span>
+                        </div>
+                        <div>${tableList}</div>
+                    `;
+                    responseContainer.classList.add('success');
+                    responseContainer.classList.remove('error', 'warning');
                 } else {
                     // syntax-highlighted JSON
                     let jsonString = JSON.stringify(result, null, 2);
@@ -725,7 +952,7 @@
                             return match.replace(/(["\d\w]+)$/, '<span style="color: var(--accent);">$1</span>');
                         });
 
-                    content = `<pre style="margin:0; font-family:inherit;">${jsonString}</pre>`;
+                    content = `<pre style="margin:0; font-family:inherit; white-space:pre-wrap; word-break:break-word;">${jsonString}</pre>`;
                     responseContainer.classList.add('success');
                     responseContainer.classList.remove('error', 'warning');
                 }
@@ -734,7 +961,7 @@
                 responseContainer.classList.remove('hidden');
             } catch (error) {
                 responseContainer.innerHTML = `
-                    <div style="display:flex; align-items:center; gap:10px;">
+                    <div style="display:flex; align-items:center; gap:8px;">
                         <i class="fas fa-bug" style="color:var(--error);"></i>
                         <span class="error-code">Application Error</span>
                     </div>
@@ -746,6 +973,148 @@
         });
 
         // ---------- HELPER: ERROR PARSING (same robust logic) ----------
+        function renderDataTable(data) {
+            if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
+                return '<div style="padding:1rem; color:var(--text-light);">No data to display</div>';
+            }
+
+            // Sort rows numerically (row_1, row_2, row_3, etc.)
+            const sortedRows = Object.entries(data).sort((a, b) => {
+                const numA = parseInt(a[0].replace('row_', '')) || 0;
+                const numB = parseInt(b[0].replace('row_', '')) || 0;
+                return numA - numB;
+            });
+
+            if (sortedRows.length === 0) {
+                return '<div style="padding:1rem; color:var(--text-light);">No data to display</div>';
+            }
+
+            // Get column names from first row
+            const firstRowData = sortedRows[0][1];
+            const columns = Object.keys(firstRowData);
+            const totalRecords = sortedRows.length;
+
+            // Start building table
+            let tableHTML = `<div class="results-header">
+<div class="results-title"><i class="fas fa-table"></i> Query Results</div>
+<div class="record-badge"><i class="fas fa-file-alt"></i> ${totalRecords} Record${totalRecords !== 1 ? 's' : ''}</div>
+<div class="results-actions"><button class="export-btn" onclick="exportToCSV()"><i class="fas fa-download"></i> Export CSV</button></div>
+</div>
+<div class="execution-summary"><i class="fas fa-check-circle"></i><span>✓ Query executed successfully | ${totalRecords} record${totalRecords !== 1 ? 's' : ''} returned</span></div>
+<div class="search-filter-container"><input type="text" id="tableSearchInput" placeholder="🔍 Search records..." onkeyup="filterTable()"></div>
+<div class="table-wrapper"><table class="data-table" id="dataTable"><thead><tr><th style="width:40px;">#</th>`;
+
+            columns.forEach(col => {
+                tableHTML += `<th>${escapeHTML(col)}</th>`;
+            });
+
+            tableHTML += `</tr></thead><tbody>`;
+
+            // Add rows with proper sequential numbering
+            sortedRows.forEach((entry, index) => {
+                const rowNum = index + 1;
+                const rowData = entry[1];
+                tableHTML += `<tr class="data-row"><td class="row-number">${rowNum}</td>`;
+
+                columns.forEach(col => {
+                    const cellValue = rowData[col];
+                    const displayValue = cellValue === null || cellValue === undefined ? '(null)' : String(cellValue);
+                    tableHTML += `<td>${escapeHTML(displayValue)}</td>`;
+                });
+
+                tableHTML += `</tr>`;
+            });
+
+            tableHTML += `</tbody></table></div>`;
+
+            // Store current data globally for export
+            window.currentTableData = {
+                columns: columns,
+                rows: sortedRows.map(entry => entry[1])
+            };
+
+            return tableHTML;
+        }
+
+        function escapeRegExp(string) {
+            return string.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        }
+
+        function filterTable() {
+            const input = document.getElementById('tableSearchInput');
+            if (!input) return;
+
+            const filter = input.value.trim().toLowerCase();
+            const table = document.getElementById('dataTable');
+            if (!table) return;
+
+            const rows = table.getElementsByClassName('data-row');
+            let visibleCount = 0;
+
+            // Match on word boundaries (not a raw substring search) so a term
+            // like "male" doesn't also match "Female". Cell values are joined
+            // with spaces so the boundary lands between columns, not just at
+            // the start/end of the whole row.
+            const filterRegex = filter ? new RegExp('\\b' + escapeRegExp(filter), 'i') : null;
+
+            for (let i = 0; i < rows.length; i++) {
+                const row = rows[i];
+                const cellText = Array.from(row.cells).map(cell => cell.textContent).join(' ');
+
+                if (!filterRegex || filterRegex.test(cellText)) {
+                    row.style.display = '';
+                    visibleCount++;
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+
+            // Update summary with filter results
+            const summary = document.querySelector('.execution-summary');
+            if (summary && filter) {
+                summary.innerHTML = `<i class="fas fa-filter"></i><span>⊙ Showing ${visibleCount} of ${rows.length} records</span>`;
+            } else if (summary) {
+                summary.innerHTML = `<i class="fas fa-check-circle"></i><span>✓ Query executed successfully | ${rows.length} record${rows.length !== 1 ? 's' : ''} returned</span>`;
+            }
+        }
+
+        function exportToCSV() {
+            if (!window.currentTableData) {
+                alert('No data to export');
+                return;
+            }
+
+            const { columns, rows } = window.currentTableData;
+            let csv = '';
+
+            // Add header
+            csv += columns.map(col => `"${col.replace(/"/g, '""')}"`).join(',') + '\n';
+
+            // Add rows
+            rows.forEach(row => {
+                const rowValues = columns.map(col => {
+                    const value = row[col];
+                    if (value === null || value === undefined) {
+                        return '';
+                    }
+                    const strValue = String(value);
+                    return `"${strValue.replace(/"/g, '""')}"`;
+                });
+                csv += rowValues.join(',') + '\n';
+            });
+
+            // Create blob and download
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement('a');
+            const url = URL.createObjectURL(blob);
+            link.setAttribute('href', url);
+            link.setAttribute('download', `export_${new Date().getTime()}.csv`);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
         function processError(errorString) {
             const errorRegex = /\((\d+),\s*"((?:\\"|\\'|\\n|[^"])+)"\)/;
             const match = errorString.match(errorRegex);
