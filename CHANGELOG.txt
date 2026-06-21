@@ -1,18 +1,14 @@
-[Version 1.6.8] - 2026-02-12
+[Version 1.6.9] - 2026-06-22
 =============================
 
-Improved
---------
+Changed
+-------
 
-- PERFORMANCE: UI animations accelerated 2x (now 0.18s-0.22s)
-- REDESIGN: Glassmorphism cards with backdrop-filter blur
-- INTERACTIONS: Faster hover states, spring theme toggle, icon rotations
-- RESPONSE: Syntax-highlighted JSON with semantic error/warning icons
-- SECURITY: Added XSS escaping for error messages
-- FONTS: JetBrains Mono for console output
-- FIXED: Theme persistence and overflow wrapping
-
-Bug Fix
---------
-
-- Eliminated misleading logic from the codebase.
+- UI: Redesigned Query Results — now renders results as a clean HTML table instead of raw JSON.
+- UX: Numeric row sorting fixed (rows display in proper sequential order).
+- Feature: Added "Export CSV" button (client-side CSV generation and download).
+- UX: Added search/filter box with live filtering and dynamic summary badge.
+- UI: Sticky table headers, improved header contrast and typography.
+- UX: Compact execution summary bar ("✓ Query executed successfully | N records returned").
+- Layout: Reduced excess whitespace, made results container height dynamic and responsive; added scrollable table wrapper.
+- Styling: Uniform cell styling and consistent spacing; export button resized and aligned.
