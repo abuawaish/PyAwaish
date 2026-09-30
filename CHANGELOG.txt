@@ -1,14 +1,46 @@
-[Version 1.6.9] - 2026-06-22
+[Version 1.7.0] - 2026-09-30
 =============================
+
+Added
+-----
+
+- Rich structured feedback for every write statement: each response now
+  carries severity (success/notice), category (DML/DDL/DCL/TCL), a headline,
+  labelled stats, explanatory notes, execution duration, and any MySQL
+  warnings (SHOW WARNINGS, captured before COMMIT).
+- DML intelligence: INSERT ... ON DUPLICATE KEY UPDATE reports rows
+  processed vs updated in place; REPLACE reports replaced rows; UPDATE
+  distinguishes rows matched vs rows actually changed ("matched, nothing
+  changed" is a notice, not a success); missing-WHERE warnings on
+  UPDATE/DELETE; LOAD DATA support with records/deleted/skipped counters.
+- Schema-change reporting: ALTER produces a real before/after diff (added,
+  removed, modified columns and index changes) plus the resulting table
+  structure; RENAME lists every renamed table; TRUNCATE confirms the
+  structure is intact; CREATE TABLE shows the new structure.
+- DCL (GRANT/REVOKE) and TCL (COMMIT/ROLLBACK/SAVEPOINT/START/BEGIN) get
+  dedicated human-readable messages.
+- Query keyword detection now strips leading comments/whitespace and handles
+  tabs, newlines and leading parentheses; DESC alias recognised as a
+  result-set query (previously fell through with a fake success message).
+- CALL now drains all result sets from stored procedures.
+- Structured insert/update/delete operations report real row counts; a
+  0-row UPDATE/DELETE now returns a warning ("no rows matched") instead of a
+  false success.
+- Config page: new Port field (default 3306, validated 1-65535), categorized
+  flash messages with a pretty error card (title + detail + fix hint) that
+  translates common MySQL error codes (1045, 1049, 2002, 2003, 2013, 1130)
+  into plain language, plus a connection-tips panel.
+- HTTPS by default: execute() now serves https:// out of the box using an
+  auto-generated persistent self-signed certificate (stored in
+  ~/.pyawaish/ssl/, covers localhost, hostname and LAN IPs, regenerated if
+  IPs change); when mkcert is installed it is preferred and issues a
+  locally-trusted certificate with zero browser warnings; pass use_ssl=False
+  for plain HTTP, or supply your own certificate via ssl_cert/ssl_key.
 
 Changed
 -------
 
-- UI: Redesigned Query Results — now renders results as a clean HTML table instead of raw JSON.
-- UX: Numeric row sorting fixed (rows display in proper sequential order).
-- Feature: Added "Export CSV" button (client-side CSV generation and download).
-- UX: Added search/filter box with live filtering and dynamic summary badge.
-- UI: Sticky table headers, improved header contrast and typography.
-- UX: Compact execution summary bar ("✓ Query executed successfully | N records returned").
-- Layout: Reduced excess whitespace, made results container height dynamic and responsive; added scrollable table wrapper.
-- Styling: Uniform cell styling and consistent spacing; export button resized and aligned.
+- Home page renders the structured feedback as a rich card: per-statement
+  icon, severity-colored headline, verb/category/target chips, stats grid,
+  explanatory notes, schema-change list ("What changed"), resulting table
+  structure and MySQL warnings.
