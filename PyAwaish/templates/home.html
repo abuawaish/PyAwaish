@@ -336,6 +336,228 @@
         .error-code { color: var(--error); font-weight: 700; }
         .warning-code { color: var(--warning); font-weight: 700; }
 
+        /* ---------- WRITE FEEDBACK — SCHEMA CHANGE / DML REPORT ---------- */
+        .fb-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 0.9rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .fb-head {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.8rem;
+        }
+
+        .fb-head i {
+            font-size: 1.5rem;
+            margin-top: 0.15rem;
+            color: var(--success);
+        }
+
+        .fb-panel.notice .fb-head i { color: var(--warning); }
+
+        .fb-head h3 {
+            font-size: 1.1rem;
+            font-weight: 700;
+            letter-spacing: -0.01em;
+            margin: 0;
+            line-height: 1.35;
+        }
+
+        .fb-chip {
+            display: inline-block;
+            padding: 0.22rem 0.65rem;
+            border-radius: 16px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            background: rgba(16, 185, 129, 0.12);
+            color: var(--success);
+            border: 1px solid rgba(16, 185, 129, 0.3);
+            margin-top: 0.4rem;
+            margin-right: 0.4rem;
+        }
+
+        .fb-panel.notice .fb-chip {
+            background: rgba(245, 158, 11, 0.12);
+            color: var(--warning);
+            border-color: rgba(245, 158, 11, 0.3);
+        }
+
+        .fb-stats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .fb-stat {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 0.5rem 0.85rem;
+            min-width: 92px;
+        }
+
+        .fb-stat .num {
+            display: block;
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--text);
+            line-height: 1.2;
+        }
+
+        .fb-stat .lbl {
+            display: block;
+            font-size: 0.68rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            margin-top: 0.15rem;
+        }
+
+        .fb-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            padding: 0.6rem 0.85rem;
+            border-radius: 10px;
+            background: rgba(99, 102, 241, 0.06);
+            border: 1px solid var(--border-soft);
+            color: var(--text-light);
+            font-size: 0.85rem;
+            line-height: 1.5;
+        }
+
+        .fb-note i {
+            color: var(--primary);
+            margin-top: 0.15rem;
+            font-size: 0.85rem;
+            flex-shrink: 0;
+        }
+
+        .fb-panel.notice .fb-note { background: rgba(245, 158, 11, 0.06); }
+        .fb-panel.notice .fb-note i { color: var(--warning); }
+
+        .fb-section {
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .fb-section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.55rem;
+            padding: 0.6rem 0.95rem;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            background: rgba(0, 0, 0, 0.03);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .fb-change-list { list-style: none; margin: 0; padding: 0; }
+
+        .fb-change {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.7rem;
+            padding: 0.65rem 0.95rem;
+            border-bottom: 1px solid var(--border-soft);
+        }
+
+        .fb-change:last-child { border-bottom: none; }
+
+        .fb-change .dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            margin-top: 0.4rem;
+            flex-shrink: 0;
+        }
+
+        .fb-change.added .dot { background: var(--success); box-shadow: 0 0 0 4px rgba(16, 185, 129, 0.15); }
+        .fb-change.removed .dot { background: var(--error); box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.12); }
+        .fb-change.modified .dot { background: var(--warning); box-shadow: 0 0 0 4px rgba(245, 158, 11, 0.14); }
+        .fb-change.renamed .dot { background: var(--accent); box-shadow: 0 0 0 4px rgba(129, 140, 248, 0.16); }
+
+        .fb-change .txt { font-size: 0.85rem; line-height: 1.45; min-width: 0; }
+        .fb-change .lbl { color: var(--text); font-weight: 600; }
+        .fb-change .det {
+            display: block;
+            color: var(--text-light);
+            font-size: 0.78rem;
+            margin-top: 0.15rem;
+            word-break: break-word;
+        }
+
+        .fb-struct {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.82rem;
+        }
+
+        .fb-struct th {
+            text-align: left;
+            padding: 0.55rem 0.9rem;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-light);
+            background: rgba(0, 0, 0, 0.03);
+            border-bottom: 1px solid var(--border);
+            white-space: nowrap;
+        }
+
+        .fb-struct td {
+            padding: 0.55rem 0.9rem;
+            border-bottom: 1px solid var(--border-soft);
+            color: var(--text);
+            vertical-align: top;
+        }
+
+        .fb-struct tr:last-child td { border-bottom: none; }
+
+        .fb-struct td.chg {
+            font-size: 0.68rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.03em;
+            white-space: nowrap;
+        }
+
+        .fb-struct td.chg.added { color: var(--success); }
+        .fb-struct td.chg.removed { color: var(--error); }
+        .fb-struct td.chg.modified { color: var(--warning); }
+        .fb-struct td.chg.renamed { color: var(--accent); }
+
+        .fb-warn-list { list-style: none; margin: 0; padding: 0; }
+
+        .fb-warn {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            padding: 0.5rem 0.95rem;
+            border-bottom: 1px solid var(--border-soft);
+            font-size: 0.82rem;
+            color: var(--warning);
+        }
+
+        .fb-warn:last-child { border-bottom: none; }
+
+        .fb-warn i { margin-top: 0.18rem; flex-shrink: 0; }
+
+        .fb-warn .w-code {
+            font-weight: 700;
+            margin-right: 0.25rem;
+            white-space: nowrap;
+        }
+
         /* ---------- THEME TOGGLE — FASTER ROTATION ---------- */
         .theme-toggle {
             position: fixed;
@@ -911,6 +1133,11 @@
                     `;
                     responseContainer.classList.add('warning');
                     responseContainer.classList.remove('error', 'success');
+                } else if (result.feedback) {
+                    // Structured write report (insert, update, delete, alter, grant, commit, ...)
+                    content = renderFeedback(result.feedback);
+                    responseContainer.classList.remove('error', 'warning', 'success');
+                    responseContainer.classList.add(result.feedback.severity === 'notice' ? 'warning' : 'success');
                 } else if (result.data) {
                     // Render data as HTML table
                     content = renderDataTable(result.data);
@@ -972,7 +1199,104 @@
             }
         });
 
-        // ---------- HELPER: ERROR PARSING (same robust logic) ----------
+        // ---------- HELPER: STRUCTURED FEEDBACK RENDERER (v1.7.0) ----------
+        function renderFeedback(fb) {
+            const notice = fb.severity === 'notice';
+            const text = value => escapeHTML(String(value === null || value === undefined ? '' : value));
+
+            const icons = {
+                Insert: 'fa-circle-plus', Replace: 'fa-right-left', Update: 'fa-pen-to-square',
+                Delete: 'fa-eraser', Truncate: 'fa-broom', Alter: 'fa-screwdriver-wrench',
+                Rename: 'fa-tag', Create: 'fa-square-plus', Drop: 'fa-trash-can',
+                Call: 'fa-play', 'Load Data': 'fa-file-import', Merge: 'fa-code-merge',
+                Grant: 'fa-key', Revoke: 'fa-ban', Commit: 'fa-check-double',
+                Rollback: 'fa-rotate-left', Savepoint: 'fa-bookmark',
+                'Start Transaction': 'fa-flag-checkered', Begin: 'fa-flag-checkered',
+                Set: 'fa-sliders', Flush: 'fa-arrows-rotate'
+            };
+            const icon = notice ? 'fa-circle-exclamation' : (icons[fb.statement] || 'fa-circle-check');
+
+            // Header: headline + statement/category chips
+            let chips = '';
+            if (fb.verb) chips += `<span class="fb-chip">${text(fb.verb)}</span>`;
+            if (fb.category) chips += `<span class="fb-chip">${text(fb.category)}</span>`;
+            if (fb.target) chips += `<span class="fb-chip">${text(fb.object_type || 'target')}: ${text(fb.target)}</span>`;
+
+            let html = `<div class="fb-panel${notice ? ' notice' : ''}">
+                <div class="fb-head">
+                    <i class="fas ${icon}"></i>
+                    <div>
+                        <h3>${text(fb.headline)}</h3>
+                        <div>${chips}</div>
+                    </div>
+                </div>`;
+
+            // Counters
+            if (Array.isArray(fb.stats) && fb.stats.length) {
+                html += '<div class="fb-stats">';
+                fb.stats.forEach(stat => {
+                    html += `<div class="fb-stat"><span class="num">${text(stat.value)}</span><span class="lbl">${text(stat.label)}</span></div>`;
+                });
+                html += '</div>';
+            }
+
+            // Schema diff
+            if (Array.isArray(fb.changes) && fb.changes.length) {
+                html += `<div class="fb-section">
+                    <div class="fb-section-title"><i class="fas fa-code-compare"></i> What changed</div>
+                    <ul class="fb-change-list">`;
+                fb.changes.forEach(change => {
+                    const kind = ['added', 'removed', 'modified', 'renamed'].includes(change.kind) ? change.kind : 'modified';
+                    const detail = change.detail ? `<span class="det">${text(change.detail)}</span>` : '';
+                    html += `<li class="fb-change ${kind}"><span class="dot"></span>
+                        <span class="txt"><span class="lbl">${text(change.label)}</span>${detail}</span></li>`;
+                });
+                html += '</ul></div>';
+            }
+
+            // Resulting table structure
+            if (Array.isArray(fb.structure) && fb.structure.length) {
+                html += `<div class="fb-section">
+                    <div class="fb-section-title"><i class="fas fa-table-columns"></i> Structure after the change &mdash; ${fb.structure.length} column${fb.structure.length !== 1 ? 's' : ''}</div>
+                    <div style="overflow-x:auto;"><table class="fb-struct">
+                    <thead><tr><th>Column</th><th>Type</th><th>Null</th><th>Key</th><th>Default</th><th>Extra</th><th></th></tr></thead><tbody>`;
+                fb.structure.forEach(column => {
+                    const status = column.status || '';
+                    html += `<tr>
+                        <td><strong>${text(column.column)}</strong></td>
+                        <td>${text(column.type)}</td>
+                        <td>${text(column.null)}</td>
+                        <td>${text(column.key)}</td>
+                        <td>${column.default === null || column.default === undefined ? '<span style="opacity:.5;">NULL</span>' : text(column.default)}</td>
+                        <td>${text(column.extra)}</td>
+                        <td class="chg ${status}">${status ? text(status) : ''}</td>
+                    </tr>`;
+                });
+                html += '</tbody></table></div></div>';
+            }
+
+            // MySQL warnings raised by the statement
+            if (Array.isArray(fb.warnings) && fb.warnings.length) {
+                html += `<div class="fb-section">
+                    <div class="fb-section-title"><i class="fas fa-triangle-exclamation"></i> MySQL reported ${fb.warnings.length} warning${fb.warnings.length !== 1 ? 's' : ''}</div>
+                    <ul class="fb-warn-list">`;
+                fb.warnings.forEach(warning => {
+                    const code = warning.code ? `<span class="w-code">[${text(warning.level || 'Warning')} ${text(warning.code)}]</span>` : '';
+                    html += `<li class="fb-warn"><i class="fas fa-circle-exclamation"></i><span>${code}${text(processWarning(String(warning.message || '')))}</span></li>`;
+                });
+                html += '</ul></div>';
+            }
+
+            // Explanatory notes
+            if (Array.isArray(fb.notes) && fb.notes.length) {
+                fb.notes.forEach(note => {
+                    html += `<div class="fb-note"><i class="fas fa-circle-info"></i><span>${text(processWarning(String(note)))}</span></div>`;
+                });
+            }
+
+            return html + '</div>';
+        }
+
         function renderDataTable(data) {
             if (!data || typeof data !== 'object' || Object.keys(data).length === 0) {
                 return '<div style="padding:1rem; color:var(--text-light);">No data to display</div>';
@@ -995,14 +1319,35 @@
             const totalRecords = sortedRows.length;
 
             // Start building table
-            let tableHTML = `<div class="results-header">
-<div class="results-title"><i class="fas fa-table"></i> Query Results</div>
-<div class="record-badge"><i class="fas fa-file-alt"></i> ${totalRecords} Record${totalRecords !== 1 ? 's' : ''}</div>
-<div class="results-actions"><button class="export-btn" onclick="exportToCSV()"><i class="fas fa-download"></i> Export CSV</button></div>
-</div>
-<div class="execution-summary"><i class="fas fa-check-circle"></i><span>✓ Query executed successfully | ${totalRecords} record${totalRecords !== 1 ? 's' : ''} returned</span></div>
-<div class="search-filter-container"><input type="text" id="tableSearchInput" placeholder="🔍 Search records..." onkeyup="filterTable()"></div>
-<div class="table-wrapper"><table class="data-table" id="dataTable"><thead><tr><th style="width:40px;">#</th>`;
+            let tableHTML = `
+            <div class="results-header">
+                <div class="results-title">
+                <i class="fas fa-table"></i> Query Results
+                </div>
+                <div class="record-badge">
+                <i class="fas fa-file-alt"></i> ${totalRecords} Record${totalRecords !== 1 ? 's' : ''}
+                </div>
+                <div class="results-actions">
+                <button class="export-btn" onclick="exportToCSV()">
+                    <i class="fas fa-download"></i> Export CSV
+                </button>
+                </div>
+            </div>
+
+            <div class="execution-summary">
+                <i class="fas fa-check-circle"></i>
+                <span>✓ Query executed successfully | ${totalRecords} record${totalRecords !== 1 ? 's' : ''} returned</span>
+            </div>
+
+            <div class="search-filter-container">
+                <input type="text" id="tableSearchInput" placeholder="🔍 Search records..." onkeyup="filterTable()">
+            </div>
+
+            <div class="table-wrapper">
+                <table class="data-table" id="dataTable">
+                <thead>
+                    <tr>
+                    <th style="width: 40px;">#</th>`;
 
             columns.forEach(col => {
                 tableHTML += `<th>${escapeHTML(col)}</th>`;
@@ -1141,12 +1486,12 @@
 
         // escape for security
         function escapeHTML(unsafe) {
-            return unsafe.replace(/[&<>"]/g, function(m) {
+            return unsafe.replace(/[&<>"']/g, function(m) {
                 if(m === '&') return '&amp;';
                 if(m === '<') return '&lt;';
                 if(m === '>') return '&gt;';
                 if(m === '"') return '&quot;';
-                return m;
+                return '&#39;';
             });
         }
     </script>
