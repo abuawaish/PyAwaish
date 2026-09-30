@@ -210,23 +210,67 @@
       left: 50%;
       transform: translateX(-50%);
       min-width: 360px;
-      max-width: 90%;
-      text-align: center;
+      max-width: 92%;
+      text-align: left;
       animation: slideDownFaster 0.22s cubic-bezier(0.21, 0.98, 0.35, 1);
       z-index: 1070;
-      background: rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.94);
       backdrop-filter: blur(12px);
       border: none;
       border-left: 6px solid #6a11cb;
-      border-radius: 100px;
+      border-radius: 18px;
       box-shadow: 0 12px 28px rgba(0,0,0,0.16);
       font-weight: 500;
-      padding: 0.9rem 1.5rem;
+      padding: 1rem 1.4rem;
       color: #1e293b;
       display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 0.5rem;
+      align-items: flex-start;
+      gap: 0.7rem;
+    }
+
+    .floating-alert.alert-success {
+      border-left-color: #10b981;
+    }
+
+    .floating-alert.alert-danger {
+      border-left-color: #ef4444;
+    }
+
+    .floating-alert .alert-icon {
+      font-size: 1.6rem;
+      line-height: 1.2;
+      flex-shrink: 0;
+      margin-top: 0.1rem;
+    }
+
+    .floating-alert.alert-success .alert-icon { color: #10b981; }
+    .floating-alert.alert-danger .alert-icon { color: #ef4444; }
+
+    .floating-alert .alert-title {
+      font-weight: 700;
+      font-size: 1.02rem;
+      margin-bottom: 0.15rem;
+      color: #0f172a;
+    }
+
+    .floating-alert .alert-detail {
+      font-size: 0.92rem;
+      color: #334155;
+      font-weight: 500;
+    }
+
+    .floating-alert .alert-hint {
+      font-size: 0.82rem;
+      color: #64748b;
+      margin-top: 0.35rem;
+      display: flex;
+      gap: 0.35rem;
+      align-items: flex-start;
+    }
+
+    .floating-alert .alert-hint i {
+      color: #6a11cb;
+      margin-top: 0.15rem;
     }
 
     @keyframes slideDownFaster {
@@ -242,6 +286,46 @@
 
     .alert .btn-close:hover {
       transform: scale(1.2);
+    }
+
+    /* ----- TROUBLESHOOTING TIPS CARD ----- */
+    .tips-card {
+      background: rgba(255, 255, 255, 0.55);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      border-radius: 18px;
+      padding: 1.1rem 1.3rem;
+      margin-top: 1.25rem;
+      font-size: 0.85rem;
+      color: #475569;
+    }
+
+    .tips-card h6 {
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #2c3e50;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .tips-card ul {
+      margin: 0;
+      padding-left: 1.1rem;
+    }
+
+    .tips-card li {
+      margin-bottom: 0.3rem;
+    }
+
+    .tips-card code {
+      background: rgba(106, 17, 203, 0.08);
+      color: #6a11cb;
+      padding: 0.1rem 0.4rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
     }
 
     /* ----- RESPONSIVE REFINEMENTS ----- */
@@ -283,15 +367,26 @@
 
           <div class="card-body p-4 p-xl-5">
             <form action="/config_mysql" method="POST" class="needs-validation" novalidate>
-              <!-- HOST -->
-              <div class="mb-4">
-                <label for="host" class="form-label">
-                  <i class="bi bi-hdd-stack me-1"></i> Hostname
-                </label>
-                <input type="text" class="form-control" id="host" name="host"
-                       placeholder="e.g., localhost, 127.0.0.1 or db.example.com"
-                       required autocomplete="off">
-                <div class="invalid-feedback">Host is required</div>
+              <!-- HOST + PORT -->
+              <div class="row">
+                <div class="col-md-8 mb-4">
+                  <label for="host" class="form-label">
+                    <i class="bi bi-hdd-stack me-1"></i> Hostname
+                  </label>
+                  <input type="text" class="form-control" id="host" name="host"
+                         placeholder="e.g., localhost, 127.0.0.1 or db.example.com"
+                         required autocomplete="off">
+                  <div class="invalid-feedback">Host is required</div>
+                </div>
+                <div class="col-md-4 mb-4">
+                  <label for="port" class="form-label">
+                    <i class="bi bi-diagram-3 me-1"></i> Port
+                  </label>
+                  <input type="number" class="form-control" id="port" name="port"
+                         placeholder="3306" value="3306" min="1" max="65535"
+                         autocomplete="off">
+                  <div class="invalid-feedback">1–65535</div>
+                </div>
               </div>
 
               <!-- USERNAME -->
@@ -339,17 +434,42 @@
               </div>
             </form>
 
-            <!-- FLASH MESSAGES — FASTER SLIDE-DOWN, MODERN GLASS -->
-            {% with messages = get_flashed_messages() %}
+            <!-- FLASH MESSAGES — CATEGORIZED PRETTY ALERTS -->
+            {% with messages = get_flashed_messages(with_categories=true) %}
               {% if messages %}
-                <div class="floating-alert alert-dismissible fade show" role="alert">
-                  <i class="bi bi-check-circle-fill" style="color: #6a11cb;"></i>
-                  {{ messages[0] }}
-                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                </div>
+                {% for category, msg in messages %}
+                  {% set is_success = (category == 'success') %}
+                  <div class="floating-alert alert-{{ 'success' if is_success else 'danger' }} alert-dismissible fade show" role="alert">
+                    <i class="alert-icon bi {{ 'bi-check-circle-fill' if is_success else 'bi-x-octagon-fill' }}"></i>
+                    <div class="flex-grow-1">
+                      {% if msg is string %}
+                        <div class="alert-title">{{ msg }}</div>
+                      {% else %}
+                        <div class="alert-title">{{ msg[0] }}</div>
+                        {% if msg|length > 1 and msg[1] %}
+                          <div class="alert-detail">{{ msg[1] }}</div>
+                        {% endif %}
+                        {% if msg|length > 2 and msg[2] %}
+                          <div class="alert-hint"><i class="bi bi-lightbulb"></i><span>{{ msg[2] }}</span></div>
+                        {% endif %}
+                      {% endif %}
+                    </div>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  </div>
+                {% endfor %}
               {% endif %}
             {% endwith %}
           </div>
+        </div>
+
+        <!-- TROUBLESHOOTING TIPS -->
+        <div class="tips-card">
+          <h6><i class="bi bi-wrench-adjustable"></i> Connection tips</h6>
+          <ul>
+            <li>Local server? Try <code>127.0.0.1</code> instead of <code>localhost</code> to skip socket issues.</li>
+            <li>Default MySQL port is <code>3306</code> — change it only if your server uses a custom port.</li>
+            <li>The database must already exist, or create it after connecting as an admin user.</li>
+          </ul>
         </div>
         <!-- subtle footer note -->
         <p class="text-center text-white-50 mt-4 small fw-light opacity-75">
