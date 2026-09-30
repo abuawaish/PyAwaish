@@ -1,3 +1,5 @@
 .idea/
 README.rst
 PyAwaish.egg-info/
+dist/
+__pycache__/
