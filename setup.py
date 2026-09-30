@@ -8,7 +8,7 @@ with open('CHANGELOG.txt', encoding='utf-8') as changelog_file:
 
 setup(
     name="PyAwaish",
-    version="1.6.9",
+    version="1.7.0",
     author="Abu Awaish",
     author_email="abuawaish7@gmail.com",
     description="A Python package for building dynamic MySQL-powered web applications with template support",
@@ -35,6 +35,7 @@ setup(
         'Flask-MySQLdb>=2.0.0,<3',
         'python-dotenv>=1.2.1,<2',
         'mysqlclient>=2.2.8,<3',
+        'cryptography>=42,<51',  # self-signed HTTPS certificate generation
     ],
     keywords="web application flask mysql dynamic templates",
     classifiers=[
